@@ -1,11 +1,11 @@
-defmodule BankApi.Schemas.UserSchema do
+defmodule BankAPI.Schemas.UserSchema do
   @moduledoc """
   Database User Schema
   """
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias BankApi.Schemas.AccountSchema
+  alias BankAPI.Schemas.AccountSchema
 
   @type t :: %__MODULE__{
     name: String.t(),

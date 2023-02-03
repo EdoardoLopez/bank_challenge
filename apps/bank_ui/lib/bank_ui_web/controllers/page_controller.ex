@@ -1,5 +1,5 @@
-defmodule BankUiWeb.PageController do
-  use BankUiWeb, :controller
+defmodule BankUIWeb.PageController do
+  use BankUIWeb, :controller
 
   def index(conn, _params) do
     render(conn, "index.html")

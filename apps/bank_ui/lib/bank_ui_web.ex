@@ -1,12 +1,12 @@
-defmodule BankUiWeb do
+defmodule BankUIWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use BankUiWeb, :controller
-      use BankUiWeb, :view
+      use BankUIWeb, :controller
+      use BankUIWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,11 +19,11 @@ defmodule BankUiWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: BankUiWeb
+      use Phoenix.Controller, namespace: BankUIWeb
 
       import Plug.Conn
-      import BankUiWeb.Gettext
-      alias BankUiWeb.Router.Helpers, as: Routes
+      import BankUIWeb.Gettext
+      alias BankUIWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -31,7 +31,7 @@ defmodule BankUiWeb do
     quote do
       use Phoenix.View,
         root: "lib/bank_ui_web/templates",
-        namespace: BankUiWeb
+        namespace: BankUIWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -45,7 +45,7 @@ defmodule BankUiWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {BankUiWeb.LayoutView, "live.html"}
+        layout: {BankUIWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
     end
@@ -80,7 +80,7 @@ defmodule BankUiWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import BankUiWeb.Gettext
+      import BankUIWeb.Gettext
     end
   end
 
@@ -95,9 +95,9 @@ defmodule BankUiWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import BankUiWeb.ErrorHelpers
-      import BankUiWeb.Gettext
-      alias BankUiWeb.Router.Helpers, as: Routes
+      import BankUIWeb.ErrorHelpers
+      import BankUIWeb.Gettext
+      alias BankUIWeb.Router.Helpers, as: Routes
     end
   end
 

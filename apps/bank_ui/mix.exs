@@ -1,4 +1,4 @@
-defmodule BankUi.MixProject do
+defmodule BankUI.MixProject do
   use Mix.Project
 
   def project do
@@ -23,7 +23,7 @@ defmodule BankUi.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {BankUi.Application, []},
+      mod: {BankUI.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

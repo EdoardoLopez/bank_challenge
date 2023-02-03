@@ -1,5 +1,5 @@
-defmodule BankUiWeb.LayoutView do
-  use BankUiWeb, :view
+defmodule BankUIWeb.LayoutView do
+  use BankUIWeb, :view
 
   # Phoenix LiveDashboard is available only in development by default,
   # so we instruct Elixir to not warn if the dashboard route is missing.

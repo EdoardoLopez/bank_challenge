@@ -1,3 +1,3 @@
-defmodule BankUiWeb.PageViewTest do
-  use BankUiWeb.ConnCase, async: true
+defmodule BankUIWeb.PageViewTest do
+  use BankUIWeb.ConnCase, async: true
 end

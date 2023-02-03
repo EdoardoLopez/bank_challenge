@@ -1,4 +1,4 @@
-defmodule BankApiWeb.ConnCase do
+defmodule BankAPIWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule BankApiWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use BankApiWeb.ConnCase, async: true`, although
+  by setting `use BankAPIWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,17 +22,17 @@ defmodule BankApiWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import BankApiWeb.ConnCase
+      import BankAPIWeb.ConnCase
 
-      alias BankApiWeb.Router.Helpers, as: Routes
+      alias BankAPIWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint BankApiWeb.Endpoint
+      @endpoint BankAPIWeb.Endpoint
     end
   end
 
   setup tags do
-    BankApi.DataCase.setup_sandbox(tags)
+    BankAPI.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

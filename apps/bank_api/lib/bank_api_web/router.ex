@@ -1,11 +1,11 @@
-defmodule BankApiWeb.Router do
-  use BankApiWeb, :router
+defmodule BankAPIWeb.Router do
+  use BankAPIWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/api", BankApiWeb do
+  scope "/api", BankAPIWeb do
     pipe_through :api
   end
 end

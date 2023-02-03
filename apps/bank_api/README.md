@@ -1,4 +1,4 @@
-# BankApi
+# BankAPI
 
 To start your Phoenix server:
 

@@ -1,12 +1,12 @@
-defmodule BankApiWeb do
+defmodule BankAPIWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use BankApiWeb, :controller
-      use BankApiWeb, :view
+      use BankAPIWeb, :controller
+      use BankAPIWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,10 +19,10 @@ defmodule BankApiWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: BankApiWeb
+      use Phoenix.Controller, namespace: BankAPIWeb
 
       import Plug.Conn
-      alias BankApiWeb.Router.Helpers, as: Routes
+      alias BankAPIWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -30,7 +30,7 @@ defmodule BankApiWeb do
     quote do
       use Phoenix.View,
         root: "lib/bank_api_web/templates",
-        namespace: BankApiWeb
+        namespace: BankAPIWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -61,8 +61,8 @@ defmodule BankApiWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import BankApiWeb.ErrorHelpers
-      alias BankApiWeb.Router.Helpers, as: Routes
+      import BankAPIWeb.ErrorHelpers
+      alias BankAPIWeb.Router.Helpers, as: Routes
     end
   end
 

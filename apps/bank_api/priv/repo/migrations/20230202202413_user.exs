@@ -1,4 +1,4 @@
-defmodule BankApi.Repo.Migrations.User do
+defmodule BankAPI.Repo.Migrations.User do
   use Ecto.Migration
 
   def up do

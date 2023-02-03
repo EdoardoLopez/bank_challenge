@@ -1,4 +1,4 @@
-defmodule BankUiWeb.Endpoint do
+defmodule BankUIWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :bank_ui
 
   # The session will be stored in the cookie and signed,
@@ -41,5 +41,5 @@ defmodule BankUiWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug BankUiWeb.Router
+  plug BankUIWeb.Router
 end

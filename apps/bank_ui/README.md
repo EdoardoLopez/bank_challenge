@@ -1,4 +1,4 @@
-# BankUi
+# BankUI
 
 To start your Phoenix server:
 

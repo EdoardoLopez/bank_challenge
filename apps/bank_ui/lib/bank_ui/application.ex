@@ -1,4 +1,4 @@
-defmodule BankUi.Application do
+defmodule BankUI.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -9,18 +9,18 @@ defmodule BankUi.Application do
   def start(_type, _args) do
     children = [
       # Start the Telemetry supervisor
-      BankUiWeb.Telemetry,
+      BankUIWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: BankUi.PubSub},
+      {Phoenix.PubSub, name: BankUI.PubSub},
       # Start the Endpoint (http/https)
-      BankUiWeb.Endpoint
-      # Start a worker by calling: BankUi.Worker.start_link(arg)
-      # {BankUi.Worker, arg}
+      BankUIWeb.Endpoint
+      # Start a worker by calling: BankUI.Worker.start_link(arg)
+      # {BankUI.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: BankUi.Supervisor]
+    opts = [strategy: :one_for_one, name: BankUI.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -28,7 +28,7 @@ defmodule BankUi.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    BankUiWeb.Endpoint.config_change(changed, removed)
+    BankUIWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

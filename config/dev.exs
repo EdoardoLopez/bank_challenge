@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :bank_api, BankApi.Repo,
+config :bank_api, BankAPI.Repo,
   username: System.get_env("DB_USER"),
   password: System.get_env("DB_PASS"),
   database: System.get_env("DB_NAME"),
@@ -11,7 +11,7 @@ config :bank_api, BankApi.Repo,
   pool_size: 10
 
 # Configures the Bank API endpoint
-config :bank_api, BankApiWeb.Endpoint,
+config :bank_api, BankAPIWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4001],
@@ -22,7 +22,7 @@ config :bank_api, BankApiWeb.Endpoint,
   watchers: []
 
 # Configures the Bank UI endpoint
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
@@ -60,7 +60,7 @@ config :bank_ui, BankUiWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
