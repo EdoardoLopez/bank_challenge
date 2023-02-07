@@ -7,6 +7,9 @@ defmodule BankAPI.Schemas.UserSchema do
 
   alias BankAPI.Schemas.AccountSchema
 
+  @timestamps_opts type: :utc_datetime
+  @optional_fields [:id]
+
   @type t :: %__MODULE__{
     name: String.t(),
     email: String.t(),
@@ -21,4 +24,28 @@ defmodule BankAPI.Schemas.UserSchema do
 
     timestamps()
   end
+
+  @doc """
+  Returns a valid changeset when given params is valid
+
+  ## Examples
+
+      iex> changeset(%{"name" => "Example", ...})
+      %UserSchema{}
+
+      iex> changeset(%{"name" => 103})
+      %Ecto.Changeset{}
+
+      iex> changeset(%{})
+      %Ecto.Changeset{}
+  """
+  @spec changeset(map) :: __MODULE__.t() | Ecto.Changeset.t()
+  def changeset(params) do
+    %__MODULE__{}
+    |> cast(params, all_fields())
+    |> validate_required(all_fields() -- @optional_fields)
+    |> unique_constraint(:email)
+  end
+
+  defp all_fields, do: __MODULE__.__schema__(:fields)
 end

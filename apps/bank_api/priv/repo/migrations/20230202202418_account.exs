@@ -10,9 +10,12 @@ defmodule BankAPI.Repo.Migrations.Account do
 
       timestamps()
     end
+
+    create index("accounts", [:account_type, :user_id], name: "unique_account_type_user_id", unique: true)
   end
 
   def down do
     drop table("accounts")
+    drop index("accounts", [:account_type, :user_id], name: "unique_account_type_user_id")
   end
 end

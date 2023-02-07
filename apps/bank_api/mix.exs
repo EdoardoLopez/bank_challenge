@@ -37,6 +37,9 @@ defmodule BankAPI.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:ecto_enum, "~> 1.4"},
+      {:faker, "~> 0.17.0"},
       {:phoenix, "~> 1.6.11"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
