@@ -41,5 +41,22 @@ defmodule BankAPI.SchemaCase do
     end
   end
 
+  def account do
+    %{
+      "account_type" => fn -> Enum.random([0, 1]) end,
+      "state" => fn -> Enum.random(["active", "inactive"]) end
+    }
+  end
+
+  def transaction do
+    %{
+      "type" => fn -> Enum.random(["deposit", "withdraw"]) end,
+      "status" => fn -> Enum.random([0, 1, 2, 3]) end
+    }
+  end
+
+  def field_type(type) when is_tuple(type), do: elem(type, 2).type
+  def field_type(type), do: type
+
   defp random_number, do: :random.uniform(100)
 end

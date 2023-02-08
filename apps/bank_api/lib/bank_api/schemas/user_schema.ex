@@ -8,7 +8,7 @@ defmodule BankAPI.Schemas.UserSchema do
   alias BankAPI.Schemas.AccountSchema
 
   @timestamps_opts type: :utc_datetime
-  @optional_fields [:id]
+  @optional_fields [:id, :inserted_at, :updated_at]
 
   @type t :: %__MODULE__{
     name: String.t(),
@@ -44,6 +44,23 @@ defmodule BankAPI.Schemas.UserSchema do
     %__MODULE__{}
     |> cast(params, all_fields())
     |> validate_required(all_fields() -- @optional_fields)
+    |> unique_constraint(:email)
+  end
+
+  @doc """
+  Returns a valid changeset when given params is valid
+
+  ## Examples
+
+      iex> update_changeset(%UserSchema{}, %{"name" => "Example", ...})
+      %UserSchema{}
+
+      iex> update_changeset(%UserSchema{}, %{"name" => 103})
+      %Ecto.Changeset{}
+  """
+  def update_changeset(%__MODULE__{} = user, params) do
+    user
+    |> cast(params, all_fields())
     |> unique_constraint(:email)
   end
 

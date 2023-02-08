@@ -11,7 +11,7 @@ defmodule BankAPI.Schemas.AccountSchema do
   @optional_fields [:id]
 
   @type t :: %__MODULE__{
-    account_type: integer(),
+    account_type: non_neg_integer(),
     current_balance: non_neg_integer(),
     state: String.t(),
     user: UserSchema.t(),
@@ -19,9 +19,9 @@ defmodule BankAPI.Schemas.AccountSchema do
   }
 
   schema "accounts" do
-    field :account_type, :integer
+    field :account_type, Ecto.Enum, values: [debit: 0, card: 1]
     field :current_balance, :integer
-    field :state, :string
+    field :state, Ecto.Enum, values: [:active, :inactive]
 
     belongs_to :user, UserSchema
     has_many :transactions, TransactionSchema, foreign_key: :account_id, references: :id

@@ -38,7 +38,7 @@ defmodule BankAPI.MixProject do
   defp deps do
     [
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:ecto_enum, "~> 1.4"},
+      {:ex_doc, "~> 0.29.1", only: :dev, runtime: false},
       {:faker, "~> 0.17.0"},
       {:phoenix, "~> 1.6.11"},
       {:phoenix_ecto, "~> 4.4"},

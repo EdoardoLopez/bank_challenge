@@ -6,6 +6,7 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
   use BankAPI.SchemaCase
   alias BankAPI.Schemas.{AccountSchema, UserSchema}
   alias Ecto.Adapters.SQL.Sandbox
+  require Logger
 
   @expected_fields_with_types [
     {:id, :id},
@@ -22,7 +23,7 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
     test "verify schema has correct fields and types" do
       actual_fields =
         for field <- AccountSchema.__schema__(:fields) do
-          type = AccountSchema.__schema__(:type, field)
+          type = AccountSchema.__schema__(:type, field) |> field_type()
           {field, type}
         end
 
@@ -32,7 +33,10 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
 
   describe "changeset/1" do
     test "success: returns a valid changeset when given valid arguments" do
-      valid_params = valid_params(@expected_fields_with_types)
+      valid_params =
+        valid_params(@expected_fields_with_types)
+        |> Map.put("account_type", account["account_type"].())
+        |> Map.put("state", account["state"].())
 
       changeset = AccountSchema.changeset(valid_params)
       assert %Changeset{valid?: true} = changeset
@@ -64,15 +68,16 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
     test "error: return and invalid changeset when account and user is duplicated" do
       Sandbox.checkout(Repo)
       {:ok, user} = new_user()
-      {:ok, account} = new_account(user)
-
+      {:ok, account_db} = new_account(user) 
+      
       changeset_duplicated =
         valid_params(@expected_fields_with_types)
-        |> Map.put("account_type", account.account_type)
-        |> Map.put("user_id", account.user_id)
+        |> Map.put("state", account["state"].())
+        |> Map.put("account_type", Atom.to_string(account_db.account_type))
+        |> Map.put("user_id", account_db.user_id)
         |> AccountSchema.changeset()
 
-      assert {:error, %Changeset{valid?: false, errors: errors}} =
+      assert {:error, %Changeset{valid?: false, errors: errors} = changeset} =
         Repo.insert(changeset_duplicated)
 
       assert errors[:account_type], "The field :account_type is missing from errors."
@@ -85,7 +90,7 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
 
   defp new_user do
     valid_params(@expected_fields_with_types)
-    |> Map.put("name", Faker.Name.first_name())
+    |> Map.put("name", Faker.Person.first_name())
     |> Map.put("email", Faker.Internet.email())
     |> UserSchema.changeset()
     |> Repo.insert()
@@ -94,6 +99,8 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
   defp new_account(user) do
     valid_params(@expected_fields_with_types)
     |> Map.put("user_id", user.id)
+    |> Map.put("account_type", account["account_type"].())
+    |> Map.put("state", account["state"].())
     |> AccountSchema.changeset()
     |> Repo.insert()
   end

@@ -1,7 +1,6 @@
 defmodule BankAPI.SchemasTest.TransactionSchemaTest do
   @moduledoc """
   Tests for Transaction schema
-  https://hackstore.re/episodio/proyecto-libro-azul-1x4/
   """
   use BankAPI.SchemaCase
   alias BankAPI.Schemas.TransactionSchema
@@ -21,7 +20,7 @@ defmodule BankAPI.SchemasTest.TransactionSchemaTest do
     test "verify schema has correct fields and types" do
       actual_fields =
         for field <- TransactionSchema.__schema__(:fields) do
-          type = TransactionSchema.__schema__(:type, field)
+          type = TransactionSchema.__schema__(:type, field) |> field_type()
           {field, type}
         end
 
@@ -31,7 +30,10 @@ defmodule BankAPI.SchemasTest.TransactionSchemaTest do
 
   describe "changeset/1" do
     test "success: returns a valid changeset when given valid arguments" do
-      valid_params = valid_params(@expected_fields_with_types)
+      valid_params =
+        valid_params(@expected_fields_with_types)
+        |> Map.put("type", transaction["type"].())
+        |> Map.put("status", transaction["status"].())
 
       changeset = TransactionSchema.changeset(valid_params)
       assert %Changeset{valid?: true} = changeset

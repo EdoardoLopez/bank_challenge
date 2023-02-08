@@ -18,8 +18,8 @@ defmodule BankAPI.Schemas.TransactionSchema do
   }
 
   schema "transactions" do
-    field :type, :string
-    field :status, :integer
+    field :type, Ecto.Enum, values: [:deposit, :withdraw]
+    field :status, Ecto.Enum, values: [idle: 0, pending: 1, success: 2, failure: 3]
     field :amount, :integer
 
     belongs_to :account, AccountSchema
