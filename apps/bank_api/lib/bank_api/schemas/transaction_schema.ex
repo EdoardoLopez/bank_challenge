@@ -8,7 +8,8 @@ defmodule BankAPI.Schemas.TransactionSchema do
   alias BankAPI.Schemas.AccountSchema
 
   @timestamps_opts type: :utc_datetime
-  @optional_fields [:id]
+  @optional_fields [:id, :inserted_at, :updated_at]
+  @update_fields [:status]
 
   @type t :: %__MODULE__{
     type: String.t(),
@@ -46,6 +47,27 @@ defmodule BankAPI.Schemas.TransactionSchema do
     %__MODULE__{}
     |> cast(params, all_fields())
     |> validate_required(all_fields() -- @optional_fields)
+  end
+
+  @doc """
+  Returns a valid changeset when given params is valid
+
+  ## Examples
+
+      iex> update_changeset(%TransactionSchema{}, %{"status" => 0})
+      %TransactionSchema{}
+
+      iex> update_changeset(%TransactionSchema{}, %{"status" => "test"})
+      %Ecto.Changeset{}
+
+      iex> update_changeset(%{})
+      %Ecto.Changeset{}
+  """
+  @spec update_changeset(__MODULE__.t(), map) :: __MODULE__.t() | Ecto.Changeset.t()
+  def update_changeset(%__MODULE__{} = transaction, params) do
+    transaction
+    |> cast(params, @update_fields)
+    |> validate_required(all_fields())
   end
 
   defp all_fields, do: __MODULE__.__schema__(:fields)

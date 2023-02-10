@@ -1,10 +1,10 @@
 defmodule BankAPI.Methods.UserMethods do
-@moduledoc """
-Methods for User
-"""
+  @moduledoc """
+  Methods for User
+  """
 
-alias BankAPI.{Repo, Schemas.UserSchema, Utils}
-alias Ecto.Changeset
+  alias BankAPI.{Repo, Schemas.UserSchema, Utils}
+  alias Ecto.Changeset
 
   @doc """
   Return all users from database.

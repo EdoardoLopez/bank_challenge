@@ -58,6 +58,7 @@ defmodule BankAPI.Schemas.UserSchema do
       iex> update_changeset(%UserSchema{}, %{"name" => 103})
       %Ecto.Changeset{}
   """
+  @spec update_changeset(__MODULE__.t(), map) :: __MODULE__.t() | Ecto.Changeset.t()
   def update_changeset(%__MODULE__{} = user, params) do
     user
     |> cast(params, all_fields())

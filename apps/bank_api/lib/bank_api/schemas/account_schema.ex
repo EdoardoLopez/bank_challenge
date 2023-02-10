@@ -8,7 +8,7 @@ defmodule BankAPI.Schemas.AccountSchema do
   alias BankAPI.Schemas.{TransactionSchema, UserSchema}
 
   @timestamps_opts type: :utc_datetime
-  @optional_fields [:id]
+  @optional_fields [:id, :inserted_at, :updated_at]
 
   @type t :: %__MODULE__{
     account_type: non_neg_integer(),
@@ -48,6 +48,25 @@ defmodule BankAPI.Schemas.AccountSchema do
     %__MODULE__{}
     |> cast(params, all_fields())
     |> validate_required(all_fields() -- @optional_fields)
+    |> unique_constraint([:account_type, :user_id], name: "unique_account_type_user_id")
+  end
+
+  @doc """
+  Returns a valid changeset when given params is valid
+
+  ## Examples
+
+      iex> update_changeset(%AccountSchema{}, %{"current_balance" => 3_000, ...})
+      %AccountSchema{}
+
+      iex> update_changeset(%AccountSchema{}, %{"current_balance" => "103"})
+      %Ecto.Changeset{}
+  """
+  @spec update_changeset(__MODULE__.t(), map) :: __MODULE__.t() | Ecto.Changeset.t()
+  def update_changeset(%__MODULE__{} = account, params) do
+    account
+    |> cast(params, all_fields())
+    |> validate_required(all_fields())
     |> unique_constraint([:account_type, :user_id], name: "unique_account_type_user_id")
   end
 

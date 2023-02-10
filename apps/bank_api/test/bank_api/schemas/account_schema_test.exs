@@ -68,8 +68,8 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
     test "error: return and invalid changeset when account and user is duplicated" do
       Sandbox.checkout(Repo)
       {:ok, user} = new_user()
-      {:ok, account_db} = new_account(user) 
-      
+      {:ok, account_db} = new_account(user)
+
       changeset_duplicated =
         valid_params(@expected_fields_with_types)
         |> Map.put("state", account["state"].())

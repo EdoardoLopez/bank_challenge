@@ -17,8 +17,8 @@ defmodule BankAPI.MethodsTest.UserMethodsTest do
   end
 
   describe "get_user/1" do
-    test "success: returns a user from DB", %{user_params: user_params} do
-      {:ok, user} = UserMethods.create_user(user_params.())
+    test "success: returns a user from DB" do
+      {:ok, user} = create_user()
 
       assert {:ok, get_user} = UserMethods.get_user(user.id)
 
@@ -33,8 +33,8 @@ defmodule BankAPI.MethodsTest.UserMethodsTest do
   end
 
   describe "create/1" do
-    test "success: it return an user when is inserted into db", %{user_params: user} do
-      assert {:ok, %UserSchema{} = created_user} = UserMethods.create_user(user.())
+    test "success: it return an user when is inserted into db" do
+      assert {:ok, %UserSchema{} = created_user} = create_user()
       user_db = Repo.get(UserSchema, created_user.id)
 
       assert created_user == user_db
@@ -46,10 +46,10 @@ defmodule BankAPI.MethodsTest.UserMethodsTest do
   end
 
   describe "update/2" do
-    test "success: it updates an user into db and return it", %{user_params: user} do
-      assert {:ok, user_inserted} = UserMethods.create_user(user.())
+    test "success: it updates an user into db and return it" do
+      assert {:ok, user_inserted} = create_user()
 
-      new_params = %{name: user.()["name"]}
+      new_params = %{name: Faker.Person.first_name()}
 
       assert {:ok, user_updated} = UserMethods.update_user(user_inserted, new_params)
       user_db = Repo.get(UserSchema, user_updated.id)
@@ -58,8 +58,8 @@ defmodule BankAPI.MethodsTest.UserMethodsTest do
       refute user_db == user_inserted
     end
 
-    test "error: return an error tuple when user can't be updated", %{user_params: user} do
-      assert {:ok, user_inserted} = UserMethods.create_user(user.())
+    test "error: return an error tuple when user can't be updated" do
+      assert {:ok, user_inserted} = create_user()
       invalid_params = %{"name" => DateTime.utc_now()}
 
       assert {:error, %Ecto.Changeset{valid?: false}} =
@@ -70,12 +70,14 @@ defmodule BankAPI.MethodsTest.UserMethodsTest do
   end
 
   describe "delete/1" do
-    test "success: it delete and user from db", %{user_params: user} do
-      assert {:ok, user_inserted} = UserMethods.create_user(user.())
+    test "success: it delete and user from db" do
+      assert {:ok, user_inserted} = create_user()
 
       assert {:ok, deleted_user} = UserMethods.delete_user(user_inserted)
 
       refute Repo.get(UserSchema, deleted_user.id)
     end
   end
+
+  defp create_user, do: valid_user() |> UserMethods.create_user()
 end

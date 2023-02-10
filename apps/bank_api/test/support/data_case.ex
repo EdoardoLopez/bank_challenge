@@ -56,4 +56,54 @@ defmodule BankAPI.DataCase do
       end)
     end)
   end
+
+  def valid_user do
+    %{
+      "name" => Faker.Person.first_name(),
+      "email" => Faker.Internet.email()
+    }
+  end
+
+  def invalid_user do
+    %{
+      "name" => DateTime.utc_now(),
+      "email" => 10_500
+    }
+  end
+
+  def valid_account(user_id) do
+    %{
+      "account_type" => Enum.random([0, 1]),
+      "current_balance" => Enum.random(1_000..5_000),
+      "state" => Enum.random(["active", "inactive"]),
+      "user_id" => user_id
+    }
+  end
+
+  def invalid_account(user_id) do
+    %{
+      "account_type" => "invalid param",
+      "current_balance" => DateTime.utc_now(),
+      "state" => 5_000,
+      "user_id" => user_id
+    }
+  end
+
+  def valid_transaction(account_id) do
+    %{
+      "amount" => Enum.random(300..1_000),
+      "status" => Enum.random([0, 1, 2, 3]),
+      "type" => Enum.random(["withdraw", "deposit"]),
+      "account_id" => account_id
+    }
+  end
+
+  def invalid_transaction(account_id) do
+    %{
+      "amount" => "Invalid value",
+      "status" => DateTime.utc_now(),
+      "type" => 300,
+      "account_id" => account_id
+    }
+  end
 end
