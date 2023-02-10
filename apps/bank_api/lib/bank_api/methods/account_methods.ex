@@ -66,7 +66,7 @@ defmodule BankAPI.Methods.AccountMethods do
       {:error, "not found"}
   """
   @spec get_account(non_neg_integer()) :: {:ok, AccountSchema.t()} | {:error, String.t()}
-  def get_account(id) when is_integer(id) do
+  def get_account(id) do
     AccountSchema
     |> Repo.get(id)
     |> case do
@@ -74,7 +74,6 @@ defmodule BankAPI.Methods.AccountMethods do
       account -> {:ok, account}
     end
   end
-  def get_account(_id), do: params_error()
 
   @doc """
   Insert an account to database.

@@ -33,7 +33,7 @@ defmodule BankAPI.Methods.UserMethods do
       {:error, "not found"}
   """
   @spec get_user(non_neg_integer()) :: {:ok, UserSchema.t()} | {:error, String.t()}
-  def get_user(id) when is_integer(id) do
+  def get_user(id) do
     UserSchema
     |> Repo.get(id)
     |> case do
@@ -41,7 +41,6 @@ defmodule BankAPI.Methods.UserMethods do
       user -> {:ok, user}
     end
   end
-  def get_user(_id), do: params_error()
 
   @doc """
   Insert an user to database.

@@ -8,4 +8,7 @@ defmodule BankAPIWeb.Router do
   scope "/api", BankAPIWeb do
     pipe_through :api
   end
+
+  forward "/", Absinthe.Plug,
+    schema: BankAPIWeb.Schema
 end

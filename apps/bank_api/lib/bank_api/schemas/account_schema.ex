@@ -19,7 +19,7 @@ defmodule BankAPI.Schemas.AccountSchema do
   }
 
   schema "accounts" do
-    field :account_type, Ecto.Enum, values: [debit: 0, card: 1]
+    field :account_type, Ecto.Enum, values: [debit: 0, credit: 1]
     field :current_balance, :integer
     field :state, Ecto.Enum, values: [:active, :inactive]
 

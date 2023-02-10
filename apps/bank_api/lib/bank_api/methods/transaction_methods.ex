@@ -66,7 +66,7 @@ defmodule BankAPI.Methods.TransactionMethods do
       {:error, "not found"}
   """
   @spec get_transaction(non_neg_integer()) :: {:ok, TransactionSchema.t()} | {:error, String.t()}
-  def get_transaction(id) when is_integer(id) do
+  def get_transaction(id) do
     TransactionSchema
     |> Repo.get(id)
     |> case do
@@ -74,7 +74,6 @@ defmodule BankAPI.Methods.TransactionMethods do
       transaction -> {:ok, transaction}
     end
   end
-  def get_transaction(_id), do: params_error()
 
   @doc """
   Insert an transaction to database.
