@@ -88,9 +88,11 @@ defmodule BankAPI.Methods.TransactionMethods do
   @spec create_transaction(map) ::
     {:ok, %{account: AccountSchema.t(), transaction: TransactionSchema.t()}} | {:error, Ecto.Changeset.t()}
   def create_transaction(params) when is_map(params) do
+    params = Utils.convert_atom_map_to_string(params)
     with {:ok, account} <- AccountMethods.get_account(params["account_id"]),
          true <- account.state == :active,
-         {:ok, new_balance} <- calculate_balance(account.current_balance, params["amount"], params["type"]) do
+         amount <- if(is_nil(params["amount"]), do: 0, else: params["amount"]),
+         {:ok, new_balance} <- calculate_balance(account.current_balance, amount, params["type"]) do
 
       transaction_schema =
         Map.put(params, "status", 2)
@@ -141,10 +143,10 @@ defmodule BankAPI.Methods.TransactionMethods do
 
   defp params_error, do: {:error, "one or more given params are invalid"}
 
-  defp calculate_balance(current_balance, amount, type) when type == "deposit" do
+  defp calculate_balance(current_balance, amount, type) when type in ["deposit", :deposit] do
     {:ok, current_balance + amount}
   end
-  defp calculate_balance(current_balance, amount, type) when type == "withdraw" do
+  defp calculate_balance(current_balance, amount, type) when type in ["withdraw", :withdraw] do
     if amount <= current_balance do
       {:ok, current_balance - amount}
     else

@@ -16,6 +16,18 @@ defmodule BankAPIWeb.Schema.AccountSchema do
     end
   end
 
-  # object :account_mutations do
-  # end
+  object :account_mutations do
+    @desc "create an account"
+    field :create_account, :account do
+      arg :account_input, non_null(:account_input)
+      resolve &AccountResolver.create_account/3
+    end
+
+    @desc "create an account"
+    field :update_account, :account do
+      arg :id, non_null(:id)
+      arg :account_input, non_null(:account_input)
+      resolve &AccountResolver.update_account/3
+    end
+  end
 end

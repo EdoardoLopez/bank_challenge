@@ -45,6 +45,7 @@ defmodule BankAPI.Schemas.UserSchema do
     |> cast(params, all_fields())
     |> validate_required(all_fields() -- @optional_fields)
     |> unique_constraint(:email)
+    |> validate_format(:email, ~r'^[\w.!#$%&’*+\-/=?\^`{|}~]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)')
   end
 
   @doc """
@@ -63,6 +64,7 @@ defmodule BankAPI.Schemas.UserSchema do
     user
     |> cast(params, all_fields())
     |> unique_constraint(:email)
+    |> validate_format(:email, ~r'^[\w.!#$%&’*+\-/=?\^`{|}~]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)')
   end
 
   defp all_fields, do: __MODULE__.__schema__(:fields)

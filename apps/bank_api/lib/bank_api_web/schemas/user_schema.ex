@@ -15,6 +15,18 @@ defmodule BankAPIWeb.Schema.UserSchema do
     end
   end
 
-  # object :user_mutations do
-  # end
+  object :user_mutations do
+    @desc "create an user"
+    field :create_user, :user do
+      arg :user_input, non_null(:user_input)
+      resolve &UserResolver.create_user/3
+    end
+
+    @desc "update an user"
+    field :update_user, :user do
+      arg :id, non_null(:id)
+      arg :user_input, non_null(:user_input)
+      resolve &UserResolver.update_user/3
+    end
+  end
 end

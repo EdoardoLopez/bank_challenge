@@ -8,7 +8,7 @@ defmodule BankAPI.Schemas.AccountSchema do
   alias BankAPI.Schemas.{TransactionSchema, UserSchema}
 
   @timestamps_opts type: :utc_datetime
-  @optional_fields [:id, :inserted_at, :updated_at]
+  @optional_fields [:id, :inserted_at, :updated_at, :current_balance]
 
   @type t :: %__MODULE__{
     account_type: non_neg_integer(),
@@ -20,7 +20,7 @@ defmodule BankAPI.Schemas.AccountSchema do
 
   schema "accounts" do
     field :account_type, Ecto.Enum, values: [debit: 0, credit: 1]
-    field :current_balance, :integer
+    field :current_balance, :integer, default: 0
     field :state, Ecto.Enum, values: [:active, :inactive]
 
     belongs_to :user, UserSchema
@@ -48,6 +48,7 @@ defmodule BankAPI.Schemas.AccountSchema do
     %__MODULE__{}
     |> cast(params, all_fields())
     |> validate_required(all_fields() -- @optional_fields)
+    |> foreign_key_constraint(:user_id)
     |> unique_constraint([:account_type, :user_id], name: "unique_account_type_user_id")
   end
 
@@ -67,6 +68,7 @@ defmodule BankAPI.Schemas.AccountSchema do
     account
     |> cast(params, all_fields())
     |> validate_required(all_fields())
+    |> foreign_key_constraint(:user_id)
     |> unique_constraint([:account_type, :user_id], name: "unique_account_type_user_id")
   end
 

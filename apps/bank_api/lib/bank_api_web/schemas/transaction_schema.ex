@@ -16,6 +16,18 @@ defmodule BankAPIWeb.Schema.TransactionSchema do
     end
   end
 
-  # object :transaction_mutations do
-  # end
+  object :transaction_mutations do
+    @desc "create a transaction"
+    field :create_transaction, :transaction do
+      arg :transaction_input, non_null(:transaction_input)
+      resolve &TransactionResolver.create_transaction/3
+    end
+
+    @desc "update a transaction"
+    field :update_transaction, :transaction do
+      arg :id, non_null(:id)
+      arg :transaction_input, non_null(:transaction_input)
+      resolve &TransactionResolver.update_transaction/3
+    end
+  end
 end
