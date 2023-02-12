@@ -14,6 +14,16 @@ config :bank_ui, BankUIWeb.Endpoint,
   pubsub_server: BankUI.PubSub,
   live_view: [signing_salt: "9I1yp41s"]
 
+# Configure TailwindCSS for BankUI project
+config :tailwind, version: "3.2.6", default: [
+  args: ~w(
+    --config=tailwind.config.js
+    --input=css/app.css
+    --output=../priv/static/assets/app.css
+  ),
+  cd: Path.expand("../assets", __DIR__) |> IO.inspect()
+]
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.29",

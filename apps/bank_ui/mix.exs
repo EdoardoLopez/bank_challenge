@@ -37,6 +37,7 @@ defmodule BankUI.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:tailwind, "~> 0.1.10", runtime: Mix.env() == :dev},
       {:phoenix, "~> 1.6.11"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -60,7 +61,7 @@ defmodule BankUI.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end
 end
