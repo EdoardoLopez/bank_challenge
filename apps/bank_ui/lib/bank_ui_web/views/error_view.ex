@@ -1,5 +1,5 @@
-defmodule BankUiWeb.ErrorView do
-  use BankUiWeb, :view
+defmodule BankUIWeb.ErrorView do
+  use BankUIWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

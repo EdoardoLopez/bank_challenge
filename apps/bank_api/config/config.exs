@@ -8,13 +8,13 @@
 import Config
 
 config :bank_api,
-  ecto_repos: [BankApi.Repo]
+  ecto_repos: [BankAPI.Repo]
 
 # Configures the endpoint
-config :bank_api, BankApiWeb.Endpoint,
+config :bank_api, BankAPIWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: BankApiWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: BankApi.PubSub,
+  render_errors: [view: BankAPIWeb.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: BankAPI.PubSub,
   live_view: [signing_salt: "2BoiLZwy"]
 
 # Configures Elixir's Logger

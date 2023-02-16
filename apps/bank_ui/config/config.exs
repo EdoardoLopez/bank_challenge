@@ -8,11 +8,21 @@
 import Config
 
 # Configures the endpoint
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: BankUiWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: BankUi.PubSub,
+  render_errors: [view: BankUIWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: BankUI.PubSub,
   live_view: [signing_salt: "9I1yp41s"]
+
+# Configure TailwindCSS for BankUI project
+config :tailwind, version: "3.2.6", default: [
+  args: ~w(
+    --config=tailwind.config.js
+    --input=css/app.css
+    --output=../priv/static/assets/app.css
+  ),
+  cd: Path.expand("../assets", __DIR__) |> IO.inspect()
+]
 
 # Configure esbuild (the version is required)
 config :esbuild,

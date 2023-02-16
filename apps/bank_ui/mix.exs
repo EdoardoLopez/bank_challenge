@@ -1,4 +1,4 @@
-defmodule BankUi.MixProject do
+defmodule BankUI.MixProject do
   use Mix.Project
 
   def project do
@@ -23,7 +23,7 @@ defmodule BankUi.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {BankUi.Application, []},
+      mod: {BankUI.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -37,10 +37,12 @@ defmodule BankUi.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.6.11"},
-      {:phoenix_html, "~> 3.0"},
+      {:httpoison, "~> 2.0"},
+      {:tailwind, "~> 0.1.10", runtime: Mix.env() == :dev},
+      {:phoenix, "~> 1.6.15"},
+      {:phoenix_html, "~> 3.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.5"},
+      {:phoenix_live_view, "~> 0.18.3"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
@@ -60,7 +62,7 @@ defmodule BankUi.MixProject do
   defp aliases do
     [
       setup: ["deps.get"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end
 end

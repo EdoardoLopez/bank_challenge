@@ -1,4 +1,4 @@
-defmodule BankUiWeb.ErrorHelpers do
+defmodule BankUIWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -39,9 +39,9 @@ defmodule BankUiWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(BankUiWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(BankUIWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(BankUiWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(BankUIWeb.Gettext, "errors", msg, opts)
     end
   end
 end

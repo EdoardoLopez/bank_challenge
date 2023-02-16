@@ -1,4 +1,4 @@
-defmodule BankApi.MixProject do
+defmodule BankAPI.MixProject do
   use Mix.Project
 
   def project do
@@ -23,7 +23,7 @@ defmodule BankApi.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {BankApi.Application, []},
+      mod: {BankAPI.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -37,6 +37,12 @@ defmodule BankApi.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.7"},
+      {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.29.1", only: :dev, runtime: false},
+      {:faker, "~> 0.17.0"},
       {:phoenix, "~> 1.6.11"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},

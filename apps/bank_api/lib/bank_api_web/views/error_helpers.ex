@@ -1,4 +1,4 @@
-defmodule BankApiWeb.ErrorHelpers do
+defmodule BankAPIWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """

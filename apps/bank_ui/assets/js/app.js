@@ -1,6 +1,5 @@
 // We import the CSS which is extracted to its own file by esbuild.
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
-import "../css/app.css"
 
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
@@ -26,14 +25,47 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+let hooks = new Object
+
+// hook to format date
+hooks.format_date = {
+  datetime() {
+    datetime = new Date(this.el.dataset.date)
+    let time_options = {
+      year: "2-digit",
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZoneName: "short",
+      hour12: false
+    }
+
+    return datetime.toLocaleString("en-us", time_options)
+  },
+  mounted() {
+    this.el.innerHTML = this.datetime();
+  },
+  updated() {
+    this.el.innerHTML = this.datetime();
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}, hooks: hooks})
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
+// Event listener to open/close modal from live view files(server)
+window.addEventListener("phx:modal-exec", ({ detail }) => {
+  console.log(detail)
+  document.querySelectorAll(detail.to).forEach(el => {
+    liveSocket.execJS(el, el.getAttribute(detail.attr))
+  })
+})
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 

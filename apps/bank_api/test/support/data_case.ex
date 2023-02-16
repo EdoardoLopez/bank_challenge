@@ -1,4 +1,4 @@
-defmodule BankApi.DataCase do
+defmodule BankAPI.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,25 +10,26 @@ defmodule BankApi.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use BankApi.DataCase, async: true`, although
+  by setting `use BankAPI.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
-      alias BankApi.Repo
+      alias BankAPI.Repo
 
       import Ecto
-      import Ecto.Changeset
+      alias Ecto.Changeset
       import Ecto.Query
-      import BankApi.DataCase
+      import BankAPI.DataCase
     end
   end
 
   setup tags do
-    BankApi.DataCase.setup_sandbox(tags)
+    BankAPI.DataCase.setup_sandbox(tags)
     :ok
   end
 
@@ -36,8 +37,8 @@ defmodule BankApi.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(BankApi.Repo, shared: not tags[:async])
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    pid = Sandbox.start_owner!(BankAPI.Repo, shared: not tags[:async])
+    on_exit(fn -> Sandbox.stop_owner(pid) end)
   end
 
   @doc """
@@ -55,4 +56,58 @@ defmodule BankApi.DataCase do
       end)
     end)
   end
+
+  def valid_user do
+    %{
+      "name" => Faker.Person.first_name(),
+      "email" => Faker.Internet.email()
+    }
+  end
+
+  def invalid_user do
+    %{
+      "name" => DateTime.utc_now(),
+      "email" => 10_500
+    }
+  end
+
+  def valid_account(user_id) do
+    %{
+      "account_type" => Enum.random([0, 1]),
+      "current_balance" => Enum.random(1_000..5_000),
+      "state" => Enum.random(["active", "inactive"]),
+      "user_id" => user_id
+    }
+  end
+
+  def invalid_account(user_id) do
+    %{
+      "account_type" => "invalid param",
+      "current_balance" => DateTime.utc_now(),
+      "state" => 5_000,
+      "user_id" => user_id
+    }
+  end
+
+  def valid_transaction(account_id) do
+    %{
+      "amount" => Enum.random(300..1_000),
+      "status" => Enum.random([0, 1, 2, 3]),
+      "type" => Enum.random(["withdraw", "deposit"]),
+      "account_id" => account_id
+    }
+  end
+
+  def invalid_transaction(account_id) do
+    %{
+      "amount" => "Invalid value",
+      "status" => DateTime.utc_now(),
+      "type" => 300,
+      "account_id" => account_id
+    }
+  end
+
+  # get Ecto.Enum field type
+  def field_type(type) when is_tuple(type), do: elem(type, 2).type
+  def field_type(type), do: type
 end

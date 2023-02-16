@@ -1,0 +1,180 @@
+<%= if message = live_flash(@flash, :info) do %>
+  <BankUIWeb.Components.success_toast>
+    <div class="ml-3 text-sm font-normal">
+      <%= message %>
+    </div>
+  </BankUIWeb.Components.success_toast>
+<% end %>
+<div class="container w-full mx-auto md:pt-10">
+  <div class="w-full px-4 mt-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
+    <div class="flex flex-col justify-between md:flex-row md:mb-6">
+      <div class="w-full md:w-24 h-full flex items-start justify-start md:justify-center h-24">
+        <button phx-click="home" type="button" class="text-blue-700 hover:border hover:border-blue-700 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M5 12l14 0"></path>
+            <path d="M5 12l6 6"></path>
+            <path d="M5 12l6 -6"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="flex flex-row">
+      </div>
+      <div class="w-full md:max-w-sm max-w-xl bg-white border border-gray-200 rounded-lg shadow mb-4 md:m-0">
+        <div class="flex flex-col items-center p-4">
+          <h5 class="text-3xl md:text-4xl font-medium text-gray-900"><%= @user["name"] %></h5>
+          <span class="mb-2 text-xs md:text-sm text-gray-500"><%= @user["email"] %></span>
+          <div class="flex mt-4 space-x-3 md:mt-6">
+            <button phx-click={BankUIWeb.Components.open_modal("modal-account")} type="button" class="capitalize text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add Account</button>
+            <button phx-click={BankUIWeb.Components.open_modal("modal-transaction")} type="button" class="capitalize text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Make Transaction</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-wrap md:m-4 justify-center md:justify-start space-x-4">
+        <%= for account <- @accounts do %>
+          <div class="bg-white border rounded shadow w-40 md:w-64 md:h-32" phx-click="set-current-account" phx-value-account_id={account["id"]}>
+            <input checked={if(account["id"] == @current_account_id, do: true)} class="hidden peer" id={"transaction_#{account["account_type"]}"} name="transaction[account_id]" type="radio" value={account["id"]}>
+            <label class="inline-flex items-center flex-col justify-center w-full p-2 md:p-4 text-gray-500 bg-white shadow rounded-lg cursor-pointer peer-checked:shadow-xl peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100" for={"transaction_#{account["account_type"]}"}>
+              <div class="flex flex-row items-center justify-between mb-2 w-full">
+                <span class="lowercase bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded border border-gray-500"><%= account["account_type"] %></span>
+                <%= if account["state"] == "ACTIVE" do %>
+                  <span class="lowercase bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-400"><%= account["state"] %></span>
+                <% else %>
+                  <span class="lowercase bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded border border-red-400"><%= account["state"] %></span>
+                <% end %>
+              </div>
+              <div class="flex flex-col items-center">
+                <span class="text-xs md:text-lg text-gray-600 capitalize">current balance:</span>
+                <span class="text-3xl md:text-4xl font-bold text-gray-900">$<%= account["current_balance"] %></span>
+              </div>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex flex-row flex-wrap flex-grow mt-2">
+      <div class="w-full">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+              <tr>
+                <th scope="col" class="px-6 py-3">
+                  transaction
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  type
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  status
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  amount
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            <%= for transaction <- @transactions do %>
+              <tr class="bg-white border-b hover:bg-gray-200">
+                <th id={"date_#{transaction["id"]}"} phx-hook="format_date" data-date={transaction["inserted_at"]} scope="row" class="px-6 py-4 text-sm md:text-base font-normal text-gray-700">
+                  <%= transaction["inserted_at"] %>
+                </th>
+                <td class="px-6 py-4 text-sm md:text-base font-normal text-gray-700">
+                  <%= transaction["type"] %>
+                </td>
+                <td class="px-6 py-4 text-sm md:text-base font-normal text-gray-700">
+                  <div class="flex items-center">
+                    <%= if transaction["status"] == "SUCCESS" do %>
+                      <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> Success
+                    <% else %>
+                      <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div> Failed
+                    <% end %>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm md:text-base font-normal text-gray-700">
+                  $<%= transaction["amount"] %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<BankUIWeb.Components.modal
+  id="modal-transaction"
+  title="Transactions"
+  modal_size="small">
+  <.form :let={f} for={%{}} as={:transaction} phx-submit="save-transaction" class="space-y-4">
+    <div>
+      <div class="p-2">
+        <%= label f, :amount, class: "capitalize block mb-2 text-sm font-medium text-gray-900" %>
+        <%= text_input f, :amount, inputmode: "numeric", pattern: "[0-9]*", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5", placeholder: "0", required: true %>
+      </div>
+      <ul class="p-2 mb-4 grid w-full gap-6 md:grid-cols-2">
+        <li>
+          <%= radio_button(f, :type, "DEPOSIT", class: "hidden peer", checked: "true") %>
+          <%= label(f, :type_DEPOSIT, class: "inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100") do %>
+            <div class="block">
+              <div class="capitalize w-full text-lg font-semibold">deposit</div>
+            </div>
+          <% end %>
+        </li>
+        <li>
+          <%= radio_button(f, :type, "WITHDRAW", class: "hidden peer")%>
+          <%= label(f, :type_WITHDRAW, class: "inline-flex items-center justify-center w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100") do %>
+            <div class="block">
+              <div class="capitalize w-full text-lg font-semibold">withdraw</div>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+    <%= if errors = live_flash(@flash, :error) do %>
+      <BankUIWeb.Components.error_alert_list
+        id="transaction">
+        <%= for error <- errors do %>
+          <li> <%= error["message"] %> </li>
+        <% end %>
+      </BankUIWeb.Components.error_alert_list>
+    <% end %>
+    <button type="submit" phx-disable-with="Saving..." class="p-2 mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">Save</button>
+  </.form>
+</BankUIWeb.Components.modal>
+
+<BankUIWeb.Components.modal
+  id="modal-account"
+  title="new account"
+  modal_size="small">
+  <.form :let={f} for={%{}} as={:account} phx-submit="save-account" class="space-y-4">
+    <div>
+      <div class="flex flex-row justify-between">
+        <div class="w-1/2 p-2">
+          <%= label f, :account_type, class: "capitalize block mb-2 text-sm font-medium text-gray-900" %>
+          <%= select f, :account_type,  ["debit": "DEBIT", "credit": "CREDIT"], class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"%>
+        </div>
+        <div class="w-1/2 p-2">
+          <%= label f, :state, class: "capitalize block mb-2 text-sm font-medium text-gray-900" %>
+          <%= select f, :state,  ["active": "ACTIVE", "inactive": "INACTIVE"], class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"%>
+        </div>
+      </div>
+      <div class="p-2">
+        <%= label f, :current_balance, class: "capitalize block mb-2 text-sm font-medium text-gray-900" %>
+        <%= text_input f, :current_balance, inputmode: "numeric", pattern: "[0-9]*", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5", placeholder: "0", required: true %>
+      </div>
+      <%= hidden_input(f, :user_id, value: @user["id"]) %>
+
+    </div>
+    <%= if errors = live_flash(@flash, :error) do %>
+      <BankUIWeb.Components.error_alert_list
+        id="account">
+        <%= for error <- errors do %>
+          <li><%= error["field"] %> <%= error["message"] %> </li>
+        <% end %>
+      </BankUIWeb.Components.error_alert_list>
+    <% end %>
+    <%= submit [class: "w-full text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center", phx_disable_with: "Saving..."], do: "Save"%>
+  </.form>
+</BankUIWeb.Components.modal>

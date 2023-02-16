@@ -1,6 +1,6 @@
-defmodule BankUi do
+defmodule BankUI do
   @moduledoc """
-  BankUi keeps the contexts that define your domain
+  BankUI keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

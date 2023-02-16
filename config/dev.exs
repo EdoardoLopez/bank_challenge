@@ -1,17 +1,13 @@
 import Config
 
 # Configure your database
-config :bank_api, BankApi.Repo,
-  username: System.get_env("DB_USER"),
-  password: System.get_env("DB_PASS"),
-  database: System.get_env("DB_NAME"),
-  hostname: System.get_env("DB_HOST"),
+config :bank_api, BankAPI.Repo,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
 # Configures the Bank API endpoint
-config :bank_api, BankApiWeb.Endpoint,
+config :bank_api, BankAPIWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4001],
@@ -22,7 +18,7 @@ config :bank_api, BankApiWeb.Endpoint,
   watchers: []
 
 # Configures the Bank UI endpoint
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
@@ -32,7 +28,8 @@ config :bank_ui, BankUiWeb.Endpoint,
   secret_key_base: "yFOFW1dnU73TEUFR8mBJSG8Eh9IxcYNCRa7F+y6bp/7fDfHxAX3hk5VdWqAWU3UF",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -60,7 +57,7 @@ config :bank_ui, BankUiWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

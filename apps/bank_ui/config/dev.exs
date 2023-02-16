@@ -6,7 +6,7 @@ import Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
@@ -16,7 +16,8 @@ config :bank_ui, BankUiWeb.Endpoint,
   secret_key_base: "yFOFW1dnU73TEUFR8mBJSG8Eh9IxcYNCRa7F+y6bp/7fDfHxAX3hk5VdWqAWU3UF",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -44,7 +45,7 @@ config :bank_ui, BankUiWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :bank_ui, BankUiWeb.Endpoint,
+config :bank_ui, BankUIWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
