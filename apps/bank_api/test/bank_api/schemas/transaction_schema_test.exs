@@ -2,7 +2,7 @@ defmodule BankAPI.SchemasTest.TransactionSchemaTest do
   @moduledoc """
   Tests for Transaction schema
   """
-  use BankAPI.SchemaCase
+  use BankAPI.DataCase
   alias BankAPI.Schemas.TransactionSchema
 
   @expected_fields_with_types [
@@ -30,19 +30,12 @@ defmodule BankAPI.SchemasTest.TransactionSchemaTest do
 
   describe "changeset/1" do
     test "success: returns a valid changeset when given valid arguments" do
-      valid_params =
-        valid_params(@expected_fields_with_types)
-        |> Map.put("type", transaction["type"].())
-        |> Map.put("status", transaction["status"].())
-
-      changeset = TransactionSchema.changeset(valid_params)
+      changeset = valid_transaction(123) |> TransactionSchema.changeset()
       assert %Changeset{valid?: true} = changeset
     end
 
     test "error: return an invalid changeset when given invalid argunments" do
-      invalid_params = invalid_params(@expected_fields_with_types)
-
-      assert %Changeset{errors: errors} = TransactionSchema.changeset(invalid_params)
+      assert %Changeset{errors: errors} = invalid_transaction(532) |> TransactionSchema.changeset()
 
       for {field, {_msg, meta}} <- errors do
         assert errors[field], "Field #{field} is missing from errors"

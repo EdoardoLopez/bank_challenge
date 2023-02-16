@@ -2,7 +2,7 @@ defmodule BankAPI.SchemasTest.UserSchemaTest do
   @moduledoc """
   Tests for User schema
   """
-  use BankAPI.SchemaCase
+  use BankAPI.DataCase
   alias BankAPI.Schemas.UserSchema
   alias Ecto.Adapters.SQL.Sandbox
 
@@ -29,16 +29,12 @@ defmodule BankAPI.SchemasTest.UserSchemaTest do
 
   describe "changeset/1" do
     test "success: returns a valid changeset when given valid arguments" do
-      valid_params = valid_params(@expected_fields_with_types)
-
-      changeset = UserSchema.changeset(valid_params)
+      changeset = valid_user() |> UserSchema.changeset()
       assert %Changeset{valid?: true} = changeset
     end
 
     test "error: return an invalid changeset when given invalid argunments" do
-      invalid_params = invalid_params(@expected_fields_with_types)
-
-      assert %Changeset{errors: errors} = UserSchema.changeset(invalid_params)
+      assert %Changeset{errors: errors} = invalid_user() |> UserSchema.changeset()
 
       for {field, {_msg, meta}} <- errors do
         assert errors[field], "Field #{field} is missing from errors"
@@ -61,12 +57,12 @@ defmodule BankAPI.SchemasTest.UserSchemaTest do
     test "error: return and error changeset when email is duplicated" do
       Sandbox.checkout(Repo)
       {:ok, user} =
-        valid_params(@expected_fields_with_types)
+        valid_user()
         |> UserSchema.changeset()
         |> Repo.insert()
 
       changeset_duplicated_email =
-        valid_params(@expected_fields_with_types)
+        valid_user()
         |> Map.put("email", user.email)
         |> UserSchema.changeset()
 

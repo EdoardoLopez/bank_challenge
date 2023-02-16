@@ -3,7 +3,7 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
   Tests for Account schema
   https://hackstore.re/episodio/proyecto-libro-azul-1x4/
   """
-  use BankAPI.SchemaCase
+  use BankAPI.DataCase
   alias BankAPI.Schemas.{AccountSchema, UserSchema}
   alias Ecto.Adapters.SQL.Sandbox
   require Logger
@@ -33,19 +33,16 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
 
   describe "changeset/1" do
     test "success: returns a valid changeset when given valid arguments" do
-      valid_params =
-        valid_params(@expected_fields_with_types)
-        |> Map.put("account_type", account["account_type"].())
-        |> Map.put("state", account["state"].())
+      {:ok, user} = new_user()
 
-      changeset = AccountSchema.changeset(valid_params)
+      changeset = valid_account(user.id) |> AccountSchema.changeset()
       assert %Changeset{valid?: true} = changeset
     end
 
     test "error: return an invalid changeset when given invalid argunments" do
-      invalid_params = invalid_params(@expected_fields_with_types)
+      {:ok, user} = new_user()
 
-      assert %Changeset{errors: errors} = AccountSchema.changeset(invalid_params)
+      assert %Changeset{errors: errors} = invalid_account(user.id) |> AccountSchema.changeset()
 
       for {field, {_msg, meta}} <- errors do
         assert errors[field], "Field #{field} is missing from errors"
@@ -70,12 +67,7 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
       {:ok, user} = new_user()
       {:ok, account_db} = new_account(user)
 
-      changeset_duplicated =
-        valid_params(@expected_fields_with_types)
-        |> Map.put("state", account["state"].())
-        |> Map.put("account_type", Atom.to_string(account_db.account_type))
-        |> Map.put("user_id", account_db.user_id)
-        |> AccountSchema.changeset()
+      changeset_duplicated = valid_account(account_db.user_id) |> AccountSchema.changeset()
 
       assert {:error, %Changeset{valid?: false, errors: errors} = changeset} =
         Repo.insert(changeset_duplicated)
@@ -89,18 +81,13 @@ defmodule BankAPI.SchemasTest.AccountSchemaTest do
   end
 
   defp new_user do
-    valid_params(@expected_fields_with_types)
-    |> Map.put("name", Faker.Person.first_name())
-    |> Map.put("email", Faker.Internet.email())
+    valid_user()
     |> UserSchema.changeset()
     |> Repo.insert()
   end
 
   defp new_account(user) do
-    valid_params(@expected_fields_with_types)
-    |> Map.put("user_id", user.id)
-    |> Map.put("account_type", account["account_type"].())
-    |> Map.put("state", account["state"].())
+    valid_account(user.id)
     |> AccountSchema.changeset()
     |> Repo.insert()
   end

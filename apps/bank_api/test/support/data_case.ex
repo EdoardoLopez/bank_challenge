@@ -22,7 +22,7 @@ defmodule BankAPI.DataCase do
       alias BankAPI.Repo
 
       import Ecto
-      import Ecto.Changeset
+      alias Ecto.Changeset
       import Ecto.Query
       import BankAPI.DataCase
     end
@@ -106,4 +106,8 @@ defmodule BankAPI.DataCase do
       "account_id" => account_id
     }
   end
+
+  # get Ecto.Enum field type
+  def field_type(type) when is_tuple(type), do: elem(type, 2).type
+  def field_type(type), do: type
 end
