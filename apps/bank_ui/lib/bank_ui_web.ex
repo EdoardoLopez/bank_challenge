@@ -39,6 +39,9 @@ defmodule BankUIWeb do
 
       # Include shared imports and aliases for views
       unquote(view_helpers())
+
+      # import phoenix components
+      import Phoenix.Component
     end
   end
 
@@ -74,6 +77,8 @@ defmodule BankUIWeb do
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
+      # import phoenix components
+      import Phoenix.Component
     end
   end
 

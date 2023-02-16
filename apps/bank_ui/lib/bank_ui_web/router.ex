@@ -17,7 +17,9 @@ defmodule BankUIWeb.Router do
   scope "/", BankUIWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    # get "/", PageController, :index
+    live "/", PageLive
+    live "/user/:id", UserLive
   end
 
   # Other scopes may use custom stacks.

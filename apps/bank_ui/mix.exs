@@ -37,11 +37,12 @@ defmodule BankUI.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:httpoison, "~> 2.0"},
       {:tailwind, "~> 0.1.10", runtime: Mix.env() == :dev},
-      {:phoenix, "~> 1.6.11"},
-      {:phoenix_html, "~> 3.0"},
+      {:phoenix, "~> 1.6.15"},
+      {:phoenix_html, "~> 3.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.5"},
+      {:phoenix_live_view, "~> 0.18.3"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},

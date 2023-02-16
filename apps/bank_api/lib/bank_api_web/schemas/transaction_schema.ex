@@ -1,10 +1,14 @@
 defmodule BankAPIWeb.Schema.TransactionSchema do
+  @moduledoc """
+  GraphQL transaction schema with queries and mutations
+  """
   use Absinthe.Schema.Notation
   alias BankAPIWeb.Resolvers.TransactionResolver
 
   object :transaction_queries do
     @desc "Fetch all transactions from database"
     field :transactions, list_of(:transaction) do
+      arg :order, :sort_order, default_value: :desc
       arg :transaction_filter, :transaction_filter
       resolve &TransactionResolver.list_transactions/3
     end

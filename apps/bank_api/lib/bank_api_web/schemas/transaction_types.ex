@@ -1,4 +1,7 @@
 defmodule BankAPIWeb.Schema.TransactionTypes do
+  @moduledoc """
+  GraphQL input and object types for transaction.
+  """
   use Absinthe.Schema.Notation
   alias BankAPIWeb.Resolvers.AccountResolver
 
@@ -8,6 +11,8 @@ defmodule BankAPIWeb.Schema.TransactionTypes do
     field(:amount, :integer)
     field(:type, :type_enum)
     field(:status, :status_enum)
+    field(:inserted_at, :datetime)
+    field(:updated_at, :datetime)
     field(:account, :account) do
       resolve &AccountResolver.get_account/3
     end

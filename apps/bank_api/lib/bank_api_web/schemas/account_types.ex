@@ -1,4 +1,7 @@
 defmodule BankAPIWeb.Schema.AccountTypes do
+  @moduledoc """
+  GraphQL input and object types for account.
+  """
   use Absinthe.Schema.Notation
   alias BankAPIWeb.Resolvers.{TransactionResolver, UserResolver}
 
@@ -12,6 +15,7 @@ defmodule BankAPIWeb.Schema.AccountTypes do
       resolve &UserResolver.get_user/3
     end
     field(:transactions, list_of(:transaction)) do
+      arg :order, :sort_order, default_value: :desc
       arg :transaction_filter, :transaction_filter
       resolve &TransactionResolver.list_transactions/3
     end

@@ -1,4 +1,7 @@
 defmodule BankAPIWeb.Schema.AccountSchema do
+  @moduledoc """
+  GraphQL account schema with queries and mutations
+  """
   use Absinthe.Schema.Notation
   alias BankAPIWeb.Resolvers.AccountResolver
 

@@ -1,4 +1,7 @@
 defmodule BankAPIWeb.Resolvers.UserResolver do
+  @moduledoc """
+  Resolver for users
+  """
   alias BankAPI.Methods.UserMethods
   alias BankAPI.Utils
 

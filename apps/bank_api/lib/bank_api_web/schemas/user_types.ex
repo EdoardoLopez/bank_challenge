@@ -1,4 +1,7 @@
 defmodule BankAPIWeb.Schema.UserTypes do
+  @moduledoc """
+  GraphQL input and object types for user.
+  """
   use Absinthe.Schema.Notation
   alias BankAPIWeb.Resolvers.AccountResolver
 

@@ -38,6 +38,8 @@ defmodule BankAPI.Methods.TransactionMethods do
   @spec transactions(map()) :: list(TransactionSchema.t())
   def transactions(args) do
     Enum.reduce(args, TransactionSchema, fn
+      {:order, order}, query ->
+        from(q in query, order_by: {^order, :inserted_at})
       {:filter, filter}, query ->
         transaction_filter_with(query, filter)
     end)

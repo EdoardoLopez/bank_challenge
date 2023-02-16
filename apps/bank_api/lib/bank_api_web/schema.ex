@@ -1,7 +1,11 @@
 defmodule BankAPIWeb.Schema do
+  @moduledoc """
+  Main Schema for GraphQL
+  """
   use Absinthe.Schema
 
   import_types Absinthe.Type.Custom
+  import_types BankAPIWeb.CustomTypes
   import_types BankAPIWeb.Schema.AccountSchema
   import_types BankAPIWeb.Schema.AccountTypes
   import_types BankAPIWeb.Schema.TransactionSchema

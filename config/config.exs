@@ -27,6 +27,9 @@ config :bank_ui, BankUIWeb.Endpoint,
   pubsub_server: BankUI.PubSub,
   live_view: [signing_salt: "9I1yp41s"]
 
+config :bank_ui,
+  api_url: System.fetch_env!("API_URL")
+
 # Configure esbuild for Bank UI project (the version is required)
 config :esbuild,
   version: "0.14.29",
@@ -44,7 +47,7 @@ config :tailwind, version: "3.2.6", default: [
     --input=css/app.css
     --output=../priv/static/assets/app.css
   ),
-  cd: Path.expand("../apps/bank_ui/assets", __DIR__) |> IO.inspect()
+  cd: Path.expand("../apps/bank_ui/assets", __DIR__)
 ]
 
 # Configures Elixir's Logger
